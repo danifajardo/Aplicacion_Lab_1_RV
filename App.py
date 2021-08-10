@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 # Libreria para Interfaz de usuario
 import tkinter as tk
 # importamos el modulo ttk para dar estilos a los componentes
-from tkinter import ttk
+from tkinter import Label, ttk
 # importamos modulo para ventana de guardado
 from tkinter import filedialog, messagebox
 # Importar libreria opencv
@@ -22,7 +22,7 @@ class App(tk.Tk):
         # Iniciamos un frame
         tk.Tk.__init__(self, *args, **kwargs)
         # Seleccionamos geometria
-        tk.Tk.geometry(self, "1500x700")
+        tk.Tk.geometry(self, "1500x720")
         # Ponemos un titulo
         tk.Tk.title(self, 'Laboratorio Realidad Virtual')
 
@@ -35,13 +35,20 @@ class App(tk.Tk):
         # Posicionamos contenedor
         Contenedor.pack(side="top", expand=True, fill=tk.BOTH)
 
-        # Botones
-        btn_iniciar = ttk.Button(
-            Contenedor, text="Escoger imagen",command=self.fun_selec_img)
+        # Creamos un menú barra
 
-        #posicionar botones
-        btn_iniciar.grid(row=0, column=0, pady=30, padx=5)
-    
+        # creamos el objeto Menu
+        menu_app = tk.Menu(self)
+        # le decimos a tkinter que este será nuestro menú
+        self.config(menu=menu_app)
+        # Creamos un nuevo menú tomando como contenedor el menú anterior
+        item_archivo = tk.Menu(menu_app)
+        # Añadimos item_archivo al menú principal
+        menu_app.add_cascade(label="Archivo", menu=item_archivo)
+        # Añadimos un item de al sub menú de archivo
+        item_archivo.add_command(
+            label="Cargar imagenes", command=self.fun_selec_img)
+
     # función que se activa con el botón "Escoger Imagen"
     def fun_selec_img(self):
         ruta_imagen = filedialog.askopenfile(title="Abrir imagen para prueba")
