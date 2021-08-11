@@ -15,7 +15,7 @@ import numpy as np
 
 # Clase principal (contenedor)
 
-
+#Mi nombre es Joseph 
 class App(tk.Tk):
     # método de iniciación
     def __init__(self, *args, **kwargs):
