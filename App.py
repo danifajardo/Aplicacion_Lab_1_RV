@@ -1,7 +1,9 @@
+from functions import selecFun
 from tkinter import *
 from tkinter import filedialog
 from PIL import ImageTk
 from PIL import Image
+import functions
 
 class App(Tk):
     def __init__(self, widht, height, projectName):
@@ -9,7 +11,9 @@ class App(Tk):
         self.widht = int(widht)
         self.height = int(height)
         self.firstImg = None
+        self.firstImgPath = None
         self.secondImg = None
+        self.secondImgPath = None
         Tk.geometry(self, widht+"x"+height)
         Tk.title(self, projectName)
         #Tk.resizable(self, False, False)
@@ -50,14 +54,16 @@ class App(Tk):
         newSize = (int(self.widht/2),int(self.height))
         imageResized = imagePath.resize(newSize, Image.ANTIALIAS)
         if anchor == 1 and self.firstImg == None:
+            self.firstImgPath = path
             self.firstImg = ImageTk.PhotoImage(imageResized)
             label = Label(panel, image = self.firstImg)
             label.configure(image=self.firstImg)
         else :
+            self.secondImgPath = path
             self.secondImg = ImageTk.PhotoImage(imageResized)
             label = Label(panel, image = self.secondImg) 
         label.pack()
         print(panel.nametowidget)
 
     def runMethod(self, method):
-        print("Ok")
+        functions.selecFun(method, self.firstImgPath, self.secondImgPath)
