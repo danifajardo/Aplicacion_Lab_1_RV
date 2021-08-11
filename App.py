@@ -1,52 +1,63 @@
-# Importo librerias
-# Libreria para manejo de imagenes para interfaz de usuario
-from PIL import Image, ImageTk
-# Libreria
-# Libreria para Interfaz de usuario
-import tkinter as tk
-# importamos el modulo ttk para dar estilos a los componentes
-from tkinter import ttk
-# importamos modulo para ventana de guardado
-from tkinter import filedialog, messagebox
-# Importar libreria opencv
-import cv2 as cv
-# importamos el modulo numpy
-import numpy as np
+from tkinter import *
+from tkinter import filedialog
+from PIL import ImageTk
+from PIL import Image
 
-# Clase principal (contenedor)
+class App(Tk):
+    def __init__(self, widht, height, projectName):
+        Tk.__init__(self)
+        self.widht = int(widht)
+        self.height = int(height)
+        self.firstImg = None
+        self.secondImg = None
+        Tk.geometry(self, widht+"x"+height)
+        Tk.title(self, projectName)
+        #Tk.resizable(self, False, False)
+        self.framset()
 
+    def framset(self):
+        #Main Menu Bar
+        newMenu = Menu(self)
+        self.config(menu=newMenu)
 
-class App(tk.Tk):
-    # método de iniciación
-    def __init__(self, *args, **kwargs):
-        # Iniciamos un frame
-        tk.Tk.__init__(self, *args, **kwargs)
-        # Seleccionamos geometria
-        tk.Tk.geometry(self, "1500x700")
-        # Ponemos un titulo
-        tk.Tk.title(self, 'Laboratorio Realidad Virtual')
+        #First Panel
+        frame = Frame(self, bg= '#000000')
+        frame.config(width=self.widht/2, height=self.height/2)
+        frame.pack(side=LEFT, expand=True, fill=BOTH)
 
-        # hacemos un contendor
-        Contenedor = tk.Frame(self, bg='#99A3A4')
-        # Cada fila de contenedor tendra un ancho de 1
-        Contenedor.grid_rowconfigure(0, weight=1)
-        # Cada columna de contenedor tendra un ancho de 1
-        Contenedor.grid_columnconfigure(0, weight=1)
-        # Posicionamos contenedor
-        Contenedor.pack(side="top", expand=True, fill=tk.BOTH)
+        #Second Panel
+        frame2 = Frame(self, bg= '#0000CC')
+        frame2.config(width=self.widht/2, height=self.height/2)
+        frame2.pack(side=RIGHT, expand=True, fill=BOTH)
 
-        # Botones
-        btn_iniciar = ttk.Button(
-            Contenedor, text="Escoger imagen",command=self.fun_selec_img)
+        #File Menu
+        fileMenu = Menu(newMenu, tearoff="off")
+        newMenu.add_cascade(label="File", menu=fileMenu)
+        fileMenu.add_command(label="Add First Image", command=lambda: self.uploadImage(panel = frame, anchor = 1))
+        fileMenu.add_command(label="Add Second Image", command=lambda: self.uploadImage(panel = frame2, anchor = 2))
 
-        #posicionar botones
-        btn_iniciar.grid(row=0, column=0, pady=30, padx=5)
-    
-    # función que se activa con el botón "Escoger Imagen"
-    def fun_selec_img(self):
-        ruta_imagen = filedialog.askopenfile(title="Abrir imagen para prueba")
-        print(ruta_imagen.name)
+        #Run Menu
+        runMenu = Menu(newMenu, tearoff="off")
+        newMenu.add_cascade(label="Run", menu=runMenu)
+        runMenu.add_cascade(label="First Method", command=lambda: self.runMethod(method = 1))
+        runMenu.add_cascade(label="Second Method", command=lambda: self.runMethod(method = 2))
+        runMenu.add_cascade(label="Third Method", command=lambda: self.runMethod(method = 3))
+        
+        
+    def uploadImage(self, panel, anchor):
+        path = filedialog.askopenfile()
+        imagePath = Image.open(path.name)
+        newSize = (int(self.widht/2),int(self.height))
+        imageResized = imagePath.resize(newSize, Image.ANTIALIAS)
+        if anchor == 1 and self.firstImg == None:
+            self.firstImg = ImageTk.PhotoImage(imageResized)
+            label = Label(panel, image = self.firstImg)
+            label.configure(image=self.firstImg)
+        else :
+            self.secondImg = ImageTk.PhotoImage(imageResized)
+            label = Label(panel, image = self.secondImg) 
+        label.pack()
+        print(panel.nametowidget)
 
-if __name__ == '__main__':
-    main = App()
-    main.mainloop()
+    def runMethod(self, method):
+        print("Ok")
