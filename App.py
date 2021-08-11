@@ -2,7 +2,8 @@ from tkinter import *
 from tkinter import filedialog
 from PIL import ImageTk
 from PIL import Image
-import functions
+import functions 
+
 
 class App(Tk):
     def __init__(self, widht, height, projectName):
@@ -16,21 +17,21 @@ class App(Tk):
         Tk.geometry(self, widht+"x"+height)
         Tk.title(self, projectName)
         #Tk.resizable(self, False, False)
-        self.framset()
+        self.frameset()
 
-    def framset(self):
+    def frameset(self):
         #Main Menu Bar
         newMenu = Menu(self)
         self.config(menu=newMenu)
 
         #First Panel
         frame = Frame(self, bg= '#000000')
-        frame.config(width=self.widht/2, height=self.height/2)
+        frame.config(width=self.widht/2, height=self.height)
         frame.pack(side=LEFT, expand=True, fill=BOTH)
 
         #Second Panel
         frame2 = Frame(self, bg= '#0000CC')
-        frame2.config(width=self.widht/2, height=self.height/2)
+        frame2.config(width=self.widht/2, height=self.height)
         frame2.pack(side=RIGHT, expand=True, fill=BOTH)
 
         #File Menu
@@ -62,7 +63,6 @@ class App(Tk):
             self.secondImg = ImageTk.PhotoImage(imageResized)
             label = Label(panel, image = self.secondImg) 
         label.pack()
-        print(panel.nametowidget)
 
     def runMethod(self, method):
         functions.selecFun(method, self.firstImgPath, self.secondImgPath)
