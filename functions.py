@@ -1,12 +1,31 @@
 import cv2
+import numpy as np
 
 width = 683
 height = 384
 size = (width, height)
 size2 = (width, height*2)
+#size3 = (width*2, height*2)
 
 def anaglifo(img):
-    print("Anaglifo", img.firstImagePath, img.secondImagePath)
+
+    #aplico una mascara de rojo en la imágen 1
+    red_img = np.array(img.firstImage, dtype="uint8")
+    red_img[:, :, 2] = 255
+
+    #aplico una mascara de cian en la imágen 2
+    cian_img = np.array(img.secondImage, dtype="uint8")
+    cian_img[:, :, 0:2] = 255
+
+    #convergen ambas imagenes
+    overlay_img = cv2.addWeighted(red_img, 0.55, cian_img, 0.45, 0)
+
+    #redimensiono la imágen para pantalla completa
+    overlay_resize_img = cv2.resize(overlay_img, size2, interpolation = cv2.INTER_AREA)
+
+    cv2.imshow("Anaglifo", overlay_resize_img)
+
+    cv2.waitKey(0)
 
 def sideBySide(img):
     resized1 = cv2.resize(img.firstImage, size2, interpolation = cv2.INTER_AREA)

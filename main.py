@@ -1,4 +1,4 @@
-import app as Ap
+import App as Ap
 
 width = "1366"
 height = "768"
